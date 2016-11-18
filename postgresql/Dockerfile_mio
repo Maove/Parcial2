@@ -1,0 +1,54 @@
+FROM centos:6.8
+
+USER root
+
+RUN yum install -y nano && yum install -y wget
+
+RUN groupadd -r postgres --gid=999 && useradd -r -g postgres --uid=999 postgres
+
+ENV GOSU_VERSION 1.7
+
+RUN set -x gosu nobody true
+
+RUN yum localinstall -y http://yum.postgresql.org/9.4/redhat/rhel-6.4-i386/pgdg-centos94-9.4-2.noarch.rpm
+
+RUN yum install -y postgresql94-server
+
+RUN service postgresql-9.4 initdb
+
+COPY pg_hba.conf /var/lib/pgsql/9.4/data/pg_hba.conf
+
+#RUN chmod 711 /var/lib/pgsql/9.4/data/pg_hba.conf
+
+COPY postgresql.conf /var/lib/pgsql/9.4/data/postgresql.conf
+
+#RUN chmod 711 /var/lib/pgsql/9.4/data/postgresql.conf
+
+RUN chkconfig postgresql-9.4 on
+
+RUN service postgresql-9.4 start
+
+EXPOSE 80
+
+EXPOSE 5432
+
+#RUN rm -f /var/lib/pgsql/9.4/data/postmaster.pid
+
+COPY create_schema.sql /tmp/create_schema.sql
+
+RUN chmod 644 /tmp/create_schema.sql
+
+WORKDIR /tmp
+
+USER postgres
+
+#RUN service postgresql-9.4 start
+
+#CMD psql < create_schema.sql
+
+#RUN service postgresql-9.4 start
+
+
+
+
+#pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
