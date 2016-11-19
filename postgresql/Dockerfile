@@ -2,7 +2,7 @@
 # example Dockerfile for https://docs.docker.com/examples/postgresql_service/
 #
 
-FROM ubuntuready
+FROM ubuntu:14.04
 MAINTAINER SvenDowideit@docker.com
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
@@ -29,14 +29,15 @@ USER postgres
 # Note: here we use ``&&\`` to run commands one after the other - the ``\``
 #       allows the RUN command to span multiple lines.
 RUN    /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER mao WITH SUPERUSER PASSWORD 'maomao';" &&\
+    psql --command "CREATE USER mao WITH PASSWORD 'maomao';" &&\
     psql --command "alter role mao with createdb;" &&\
+    psql --command "ALTER USER postgres WITH PASSWORD 'postgres';" &&\
     psql --command "create database sinatra owner mao;" &&\
     psql --command "\connect sinatra" &&\
-    psql --command "CREATE TABLE presentaciones(id     integer NOT NULL PRIMARY KEY, fecha     varchar(100) NOT NULL UNIQUE);" &&\
+    psql --command "CREATE TABLE presentaciones(id   integer NOT NULL PRIMARY KEY,   fecha varchar(100) NOT NULL UNIQUE);" &&\
     psql --command "grant all privileges on table presentaciones to mao;" &&\
-    psql --command "INSERT INTO presentaciones(id, fecha) VALUES (1 , '5 julio');" &&\
-    psql --command "INSERT INTO presentaciones(id, fecha) VALUES (2 , '25 noviembre');"
+    psql --command "INSERT INTO presentaciones(id, fecha) VALUES (1, '5 julio');" &&\
+    psql --command "INSERT INTO presentaciones(id, fecha) VALUES (2, '25 noviembre');"
 
 
 # Adjust PostgreSQL configuration so that remote connections to the

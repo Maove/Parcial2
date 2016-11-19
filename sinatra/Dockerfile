@@ -1,28 +1,30 @@
-FROM centos:6.8
+FROM ubuntu_updated:latest
 
-USER root
+#FROM centos:6.8
 
-RUN yum install -y nano && yum install -y wget
+#USER root
 
-RUN yum groupinstall "Development tools" -y
+#RUN yum install -y nano && yum install -y wget
 
-RUN yum install -y gcc-c++ glibc-headers openssl openssl-devel readline libyaml-devel readline-devel zlib zlib-devel
+#RUN yum groupinstall "Development tools" -y
 
-WORKDIR /home
+#RUN yum install -y gcc-c++ glibc-headers openssl openssl-devel readline libyaml-devel readline-devel zlib zlib-devel
 
-RUN wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz
+#WORKDIR /home
 
-RUN tar xvfvz ruby-2.1.2.tar.gz
+#RUN wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz
 
-WORKDIR /home/ruby-2.1.2
+#RUN tar xvfvz ruby-2.1.2.tar.gz
 
-RUN ./configure
+#WORKDIR /home/ruby-2.1.2
 
-RUN make
+#RUN ./configure
 
-RUN make install
+#RUN make
 
-RUN yum install -y postgresql-devel
+#RUN make install
+
+#RUN yum install -y postgresql-devel
 
 #RUN yum install -y rvm && rvm reinstall 1.9.3
 
@@ -50,4 +52,4 @@ WORKDIR /home
 
 RUN bundle install
 
-RUN foreman start &
+CMD foreman start

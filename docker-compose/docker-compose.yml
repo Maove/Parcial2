@@ -1,0 +1,14 @@
+version: '2'
+services:
+  centos:
+    image: centos_sinatra:latest
+    ports:
+      - "5000:5000"
+    links:
+      - postgresql
+    depends_on:
+      - postgresql
+  postgresql:
+    image: ubuntu_postgresql:latest
+    ports:
+      - "5432:5432"

@@ -5,11 +5,11 @@ require 'pg'
 set :bind, '0.0.0.0'
 
 db_params = {
-:host => '192.168.131.17',
-:dbname => 'sinatra',
+:host => '192.168.130.226',
+:dbname => 'postgres',
 :port => '5432',
-:user => 'mao',
-:password => 'maomao'
+:user => 'postgres',
+:password => 'postgres'
 }
 
 Psql = PG::Connection.new(db_params)
